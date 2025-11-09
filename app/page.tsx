@@ -1,17 +1,42 @@
 'use client';
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { FaChevronDown, FaInstagram, FaGithub, FaSteam, FaReact, FaNodeJs, FaGitAlt, FaPhp, FaLaravel } from "react-icons/fa";
+import { SiTailwindcss, SiGodotengine } from "react-icons/si";
+import { TbBrandCSharp } from "react-icons/tb";
+
+const techIcons = {
+  "React": FaReact,
+  "TailwindCSS": SiTailwindcss,
+  "Node.js": FaNodeJs,
+  "Godot": SiGodotengine,
+  "C#": TbBrandCSharp,
+  "Git": FaGitAlt,
+  "PHP": FaPhp,
+  "Laravel": FaLaravel,
+};
+
+const techColors = {
+  React: "#61DBFB",
+  "TailwindCSS": "#38B2AC",
+  "Node.js": "#68A063",
+  Godot: "#478CBF",
+  "C#": "#9B4F96",
+  Git: "#F1502F",
+  PHP: "#787CB5",
+  Laravel: "#FF2D20",
+};
 
 export default function Portfolio() {
   const [showIntro, setShowIntro] = useState(true);
+  const techs: (keyof typeof techIcons)[] = ["React", "TailwindCSS", "Node.js", "Godot", "C#", "Git", "PHP", "Laravel"];
 
   useEffect(() => {
     const timer = setTimeout(() => setShowIntro(false), 2500);
     return () => clearTimeout(timer);
   }, []);
 
-  // Custom cursor
+  // cursor
   useEffect(() => {
     const cursor = document.createElement("div");
     cursor.className =
@@ -25,7 +50,7 @@ export default function Portfolio() {
     window.addEventListener("mousemove", move);
     return () => window.removeEventListener("mousemove", move);
   }, []);
-
+  //snow
   useEffect(() => {
     const canvas = document.getElementById("snowCanvas") as HTMLCanvasElement | null;
     if (!canvas) return;
@@ -148,7 +173,6 @@ export default function Portfolio() {
 
   return (
     <div className="min-h-screen bg-black text-white font-sans overflow-x-hidden">
-      {/* Intro Animation */}
       <AnimatePresence>
         {showIntro && (
           <motion.div
@@ -168,7 +192,6 @@ export default function Portfolio() {
         )}
       </AnimatePresence>
 
-      {/* Hero Section */}
       <motion.section
         className="h-screen flex flex-col items-center justify-center text-center"
         initial={{ opacity: 0, y: 50 }}
@@ -191,7 +214,7 @@ export default function Portfolio() {
           animate={{ opacity: 1 }}
           transition={{ delay: 3.5, duration: 1 }}
         >
-          Developer
+          Student / Developer
         </motion.p>
 
         <motion.a
@@ -211,41 +234,41 @@ export default function Portfolio() {
               ease: "easeInOut",
             }}
           >
-            <ChevronDown size={96} className="text-white" />
+            <FaChevronDown size={96} className="text-white" />
           </motion.div>
         </motion.a>
       </motion.section>
 
-      {/* About Section */}
-      <section id="about" className="py-24 px-6 max-w-3xl mx-auto">
+
+      <section id="about" className="py-24 px-6 max-w-4xl mx-auto">
         <h2 className="text-4xl font-bold mb-4">About Me</h2>
         <p className="text-gray-400 leading-relaxed">
-          I'm a passionate developer who loves building interactive, high-quality
-          digital experiences. I specialize in frontend development, creating
-          clean designs with smooth animations and attention to detail.
+          Fuck frontend
         </p>
       </section>
 
-      {/* Tech Stack Section */}
-      <section id="tech" className="py-24 px-6 max-w-3xl mx-auto">
+      <section id="tech" className="py-24 px-6 max-w-4xl mx-auto">
         <h2 className="text-4xl font-bold mb-4">Tech Stack</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 text-center">
-          {["React", "TailwindCSS", "Node.js", "Framer Motion", "Godot", "Python", "C++", "Git"].map(
-            (tech) => (
+          {techs.map((tech) => {
+            const Icon = techIcons[tech]; 
+            const color = techColors[tech];
+            return (
               <motion.div
                 key={tech}
-                className="p-4 bg-gray-900 rounded-2xl hover:bg-gray-800 transition"
+                className="p-4 bg-gray-900 rounded-2xl hover:bg-gray-800 transition flex flex-col items-center gap-2"
                 whileHover={{ scale: 1.05 }}
               >
-                {tech}
+                {Icon && <Icon size={40} color={color} />}
+                <span>{tech}</span>
               </motion.div>
-            )
-          )}
+            );
+          })}
         </div>
       </section>
 
-      {/* Projects Section */}
-      <section id="projects" className="py-24 px-6 max-w-5xl mx-auto">
+
+      <section id="projects" className="py-24 px-6 max-w-4xl mx-auto">
         <h2 className="text-4xl font-bold mb-8">Projects</h2>
         <div className="grid md:grid-cols-2 gap-8">
           <motion.div
@@ -253,36 +276,58 @@ export default function Portfolio() {
             className="p-6 bg-gray-900 rounded-2xl shadow-lg hover:shadow-xl transition"
             whileHover={{ y: -5 }}
           >
-            <h3 className="text-2xl font-semibold mb-2">Project 1</h3>
+            <h3 className="text-2xl font-semibold mb-2">Žižkovska lajna</h3>
             <p className="text-gray-400">
-              A cool description of what th12416is project does and what tech it uses.
+              Top-down shooter game
             </p>
           </motion.div>
-          <motion.div
-            key={2}
-            className="p-6 bg-gray-900 rounded-2xl shadow-lg hover:shadow-xl transition"
-            whileHover={{ y: -5 }}
-          >
-            <h3 className="text-2xl font-semibold mb-2">Project 2</h3>
-            <p className="text-gray-400">
-              A cool description of what th12416is project does and what tech it uses.
-            </p>
-          </motion.div>
-          <motion.div
-            key={3}
-            className="p-6 bg-gray-900 rounded-2xl shadow-lg hover:shadow-xl transition"
-            whileHover={{ y: -5 }}
-          >
-            <h3 className="text-2xl font-semibold mb-2">Project 3</h3>
-            <p className="text-gray-400">
-              A cool description of what th12416is project does and what tech it uses.
-            </p>
-          </motion.div>
+
         </div>
       </section>
 
-      <footer className="text-center py-12 text-gray-600 border-t border-gray-800">
+      
+
+      <section id="tasks" className="py-24 px-6 max-w-4xl mx-auto">
+        <h2 className="text-4xl font-bold mb-8">Tasks</h2>
+        <div className="grid md:grid-cols-2 gap-8">
+          <motion.div
+            key={1}
+            className="p-6 bg-gray-900 rounded-2xl shadow-lg hover:shadow-xl transition"
+            whileHover={{ y: -5 }}
+          >
+            <h3 className="text-2xl font-semibold mb-2">Edu tech days</h3>
+            <p className="text-gray-400">
+              Edut tech days
+            </p>
+          </motion.div>
+
+        </div>
+      </section>
+
+      <section id="contact" className="py-24 px-6 max-w-4xl mx-auto">
+          <h2 className="text-4xl font-bold mb-8">Contact me</h2>
+      </section>
+
+      <footer className="text-center py-12 text-gray-600 border-t border-gray-800 flex justify-center items-center gap-5 ">
         © {new Date().getFullYear()} Jakub Málek. All rights reserved.
+        <motion.a
+          href="https://www.instagram.com/malkinw_/"
+        >
+          <FaInstagram className="hover:text-white transition duration-300 cursor-none" size={50} />
+        </motion.a>
+
+        <motion.a
+          href="https://github.com/MalkiNcz/"
+        >
+          <FaGithub className="hover:text-white transition duration-300 cursor-none" size={48} />
+        </motion.a>
+
+        <motion.a
+          href="https://steamcommunity.com/id/malkin_exe/"
+        >
+          <FaSteam className="hover:text-white transition duration-300 cursor-none" size={48} />
+        </motion.a>
+
       </footer>
     </div>
   );
