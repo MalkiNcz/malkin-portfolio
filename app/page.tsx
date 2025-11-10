@@ -36,62 +36,82 @@ export default function Portfolio() {
   const techs: (keyof typeof techIcons)[] = ["React", "TailwindCSS", "Node.js", "Godot", "C#", "Git", "PHP", "Laravel"];
   const form = useRef<HTMLFormElement>(null);
   const [modal, setModal] = useState<{ type: string; msg: string } | null>(null);
+  const fullText = "Starting...";
+  const [typedText, setTypedText] = useState("");
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowIntro(false), 2500);
+    const timer = setTimeout(() => setShowIntro(false), 4500);
     return () => clearTimeout(timer);
   }, []);
 
-  // cursor
-useEffect(() => {
-  let cursor: HTMLDivElement | null = null;
-
-  const enableCustomCursor = () => {
-    document.documentElement.style.cursor = "none";
-
-    cursor = document.createElement("div");
-    cursor.className =
-      "fixed w-4 h-4 bg-white rounded-full pointer-events-none z-50 mix-blend-difference";
-    cursor.style.transform = "translate(-50%, -50%)";
-    document.body.appendChild(cursor);
-
-    const move = (e: MouseEvent) => {
-      if (cursor) {
-        cursor.style.left = `${e.clientX}px`;
-        cursor.style.top = `${e.clientY}px`;
+  useEffect(() => {
+    let i = 0;
+    const typeWriter = () => {
+      if (i < fullText.length) {
+        setTypedText(fullText.slice(0, i + 1));
+        i++;
+        timeoutRef.current = setTimeout(typeWriter, 300);
       }
     };
-    window.addEventListener("mousemove", move);
+
+    timeoutRef.current = setTimeout(typeWriter, 300); 
+
     return () => {
-      window.removeEventListener("mousemove", move);
-      cursor?.remove();
-      cursor = null;
-      document.documentElement.style.cursor = "auto";
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  };
+  }, []);
 
-  let cleanup: (() => void) | null = null;
+  // cursor
+  useEffect(() => {
+    let cursor: HTMLDivElement | null = null;
 
-  const handleResize = () => {
-    const isLarge = window.innerWidth >= 1024;
+    const enableCustomCursor = () => {
+      document.documentElement.style.cursor = "none";
 
-    if (isLarge && !cleanup) {
-      cleanup = enableCustomCursor();
-    } else if (!isLarge && cleanup) {
-      cleanup();
-      cleanup = null;
-    }
-  };
+      cursor = document.createElement("div");
+      cursor.className =
+        "fixed w-4 h-4 bg-white rounded-full pointer-events-none z-50 mix-blend-difference";
+      cursor.style.transform = "translate(-50%, -50%)";
+      document.body.appendChild(cursor);
 
-  handleResize();
+      const move = (e: MouseEvent) => {
+        if (cursor) {
+          cursor.style.left = `${e.clientX}px`;
+          cursor.style.top = `${e.clientY}px`;
+        }
+      };
+      window.addEventListener("mousemove", move);
+      return () => {
+        window.removeEventListener("mousemove", move);
+        cursor?.remove();
+        cursor = null;
+        document.documentElement.style.cursor = "auto";
+      };
+    };
 
-  window.addEventListener("resize", handleResize);
+    let cleanup: (() => void) | null = null;
 
-  return () => {
-    window.removeEventListener("resize", handleResize);
-    if (cleanup) cleanup();
-  };
-}, []);
+    const handleResize = () => {
+      const isLarge = window.innerWidth >= 1024;
+
+      if (isLarge && !cleanup) {
+        cleanup = enableCustomCursor();
+      } else if (!isLarge && cleanup) {
+        cleanup();
+        cleanup = null;
+      }
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      if (cleanup) cleanup();
+    };
+  }, []);
 
   //snow
   useEffect(() => {
@@ -251,15 +271,15 @@ useEffect(() => {
           <motion.div
             className="fixed inset-0 flex items-center justify-center bg-black z-50 select-none"
             initial={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 0.5 } }}
+            exit={{ opacity: 0, transition: { duration: 0.4 } }}
           >
             <motion.h1
-              initial={{ scale: 0 }}
-              animate={{ scale: 1, rotate: 360 }}
+              initial={{ scale: 1 }}
+              animate={{ scale: 1 }}
               transition={{ duration: 1 }}
               className="text-5xl font-bold"
             >
-              Welcome
+              {typedText}
             </motion.h1>
           </motion.div>
         )}
@@ -329,7 +349,7 @@ useEffect(() => {
             return (
               <motion.div
                 key={tech}
-                className="p-4 bg-black rounded-2xl hover:bg-neutral-900 transition flex flex-col items-center gap-2 border"
+                className="p-4 bg-black rounded-2xl hover:bg-neutral-900 transition flex flex-col items-center gap-2 border-3 border-white/20 hover:border-white/70"
                 whileHover={{ scale: 1.05 }}
               >
                 {Icon && <Icon size={40} color={color} />}
@@ -344,8 +364,11 @@ useEffect(() => {
       <section id="projects" className="py-24 px-6 max-w-4xl mx-auto">
         <h2 className="text-4xl font-bold mb-8">Projects</h2>
         <div className="grid md:grid-cols-2 gap-8">
-          <Card title={"Žižkovská lajna"} description={"Top-down action shooter game."} img={"/zl-1.jpg"} />
-
+          <Card title="Žižkovská lajna" description="Top-down action shooter game." img="/zl-1.jpg" rdr="https://malkincz.github.io/zizLajna/" />
+          <Card title="Risk realm" description="Online casino simulator" rdr="https://github.com/KoblizekXD/riskrealm" />
+          <Card title="Cock down shooter" description="Relaxing game where you shoot chickens down." rdr="https://github.com/Chigga-Solutions/Cock-Down-Shooter" />
+          <Card title="Kontrola výkazů + Kontrola dohledu" description="Apps for more efficient data control in windows forms" />
+          <Card title="Termio - quizzes" description="Quizzes implemented in Termio.cz - working on" rdr="https://termio.cz" />
         </div>
       </section>
 
@@ -354,7 +377,7 @@ useEffect(() => {
       <section id="tasks" className="py-24 px-6 max-w-4xl mx-auto">
         <h2 className="text-4xl font-bold mb-8">Tasks</h2>
         <div className="grid md:grid-cols-2 gap-8">
-          <Card title={"Edu tech days"} description={"HTML and CSS"} />
+          <Card title={"Edu tech days"} description={"HTML and CSS"} rdr="https://malkincz.github.io/edutechdays/" />
 
 
         </div>
@@ -366,12 +389,12 @@ useEffect(() => {
         <form
           ref={form}
           onSubmit={sendEmail}
-          className="flex flex-col gap-4 bg-black p-6 rounded-2xl cursor-none border"
+          className="flex flex-col gap-4 bg-black p-6 rounded-2xl cursor-none border max-w-md"
         >
           <input
             type="text"
             name="title"
-            placeholder="Subject"
+            placeholder="Title"
             className="p-2 rounded bg-neutral-800 text-white cursor-none border-2 border-neutral-500 focus:border-neutral-300 outline-0"
             required
           />
@@ -405,25 +428,27 @@ useEffect(() => {
         </form>
       </section>
 
-      <footer className="text-center py-12 text-gray-600 border-t border-gray-800 flex justify-center items-center gap-5 ">
+      <footer className="text-center py-12 text-gray-600 border-t border-gray-800 flex flex-col md:flex-row justify-center items-center gap-5 ">
         © {new Date().getFullYear()} Jakub Málek. All rights reserved.
-        <motion.a
+        <div className="flex gap-5">
+          <motion.a
           href="https://www.instagram.com/malkinw_/"
         >
-          <FaInstagram className="hover:text-white transition duration-300 cursor-none" size={50} />
+          <FaInstagram className="hover:text-white transition duration-300 cursor-none" size={34} />
         </motion.a>
 
         <motion.a
           href="https://github.com/MalkiNcz/"
         >
-          <FaGithub className="hover:text-white transition duration-300 cursor-none" size={48} />
+          <FaGithub className="hover:text-white transition duration-300 cursor-none" size={32} />
         </motion.a>
 
         <motion.a
           href="https://steamcommunity.com/id/malkin_exe/"
         >
-          <FaSteam className="hover:text-white transition duration-300 cursor-none" size={48} />
+          <FaSteam className="hover:text-white transition duration-300 cursor-none" size={32} />
         </motion.a>
+        </div>
 
       </footer>
       {modal && <Modal type={modal.type} msg={modal.msg} />}

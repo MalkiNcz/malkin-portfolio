@@ -1,19 +1,27 @@
-import { hover, motion } from "framer-motion";
-import { redirect } from "next/dist/server/api-utils";
-import Image from "next/image";
+import { motion } from "framer-motion";
+import { useState } from "react";
+
 
 type CardProps = {
-    title: String,
-    description: String,
-    img: String | null
+    title: string,
+    description: string,
+    img?: string | null,
+    rdr?: string
 }
 
 
 
-export default function Card({ title, description, img }: CardProps) {
+export default function Card({ title, description, img, rdr }: CardProps) {
+
+
+    const handleClick = () => {
+        if (rdr) {
+            window.open(rdr, "_blank");
+        } 
+    };
     return (
         <motion.div
-            className={`relative flex items-end text-white rounded-xl overflow-hidden shadow-lg h-64 justify-center bg-cover border-3 ${!img ? "bg-linear-to-r from-orange-600 via-amber-900 to-amber-950" : ""}`}
+            className={`relative flex items-end text-white rounded-xl overflow-hidden shadow-lg h-64 justify-center bg-cover hover:border-3 hover:border-white/85 ${!img ? "bg-linear-to-r from-neutral-600 via-neutral-700 to-neutral-800" : ""}`}
             style={img ? { backgroundImage: `url(${img})` } : undefined}
             initial="rest"
             whileHover="hover"
@@ -28,7 +36,7 @@ export default function Card({ title, description, img }: CardProps) {
                 className="text-xl font-bold text-white z-30"
                 variants={{
                     rest: { y: "-100%" },
-                    hover: { y: "-300%" }   
+                    hover: { y: "-300%" }
                 }}
                 transition={{ duration: 0.35 }}
             >
@@ -56,11 +64,13 @@ export default function Card({ title, description, img }: CardProps) {
                         hover: { opacity: 1, y: 0 },
                     }}
                     transition={{ duration: 0.3, delay: 0.3 }}
-                    onClick={() => window.open("https://malkincz.github.io/zizLajna/", "_blank")}
+                    onClick={handleClick}
                 >
                     Read more
                 </motion.button>
             </motion.div>
+            
         </motion.div>
+
     );
 }
