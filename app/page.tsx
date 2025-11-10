@@ -152,7 +152,7 @@ export default function Portfolio() {
       for (let i = 0; i < flakeCount; i++) {
         const flake = flakes[i];
         const dist = Math.sqrt((flake.x - mX) ** 2 + (flake.y - mY) ** 2);
-        const minDist = 150;
+        const minDist = 50;
 
         if (dist < minDist) {
           const force = minDist / (dist * dist);
