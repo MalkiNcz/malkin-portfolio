@@ -6,6 +6,8 @@ import { SiTailwindcss, SiGodotengine } from "react-icons/si";
 import { TbBrandCSharp } from "react-icons/tb";
 import emailjs from "@emailjs/browser";
 import Modal from "@/components/modal";
+import Card from "@/components/card"
+
 
 const techIcons = {
   "React": FaReact,
@@ -41,20 +43,56 @@ export default function Portfolio() {
   }, []);
 
   // cursor
-  useEffect(() => {
-    const cursor = document.createElement("div");
+useEffect(() => {
+  let cursor: HTMLDivElement | null = null;
+
+  const enableCustomCursor = () => {
+    document.documentElement.style.cursor = "none";
+
+    cursor = document.createElement("div");
     cursor.className =
       "fixed w-4 h-4 bg-white rounded-full pointer-events-none z-50 mix-blend-difference";
     cursor.style.transform = "translate(-50%, -50%)";
     document.body.appendChild(cursor);
 
     const move = (e: MouseEvent) => {
-      cursor.style.left = `${e.clientX}px`;
-      cursor.style.top = `${e.clientY}px`;
+      if (cursor) {
+        cursor.style.left = `${e.clientX}px`;
+        cursor.style.top = `${e.clientY}px`;
+      }
     };
     window.addEventListener("mousemove", move);
-    return () => window.removeEventListener("mousemove", move);
-  }, []);
+    return () => {
+      window.removeEventListener("mousemove", move);
+      cursor?.remove();
+      cursor = null;
+      document.documentElement.style.cursor = "auto";
+    };
+  };
+
+  let cleanup: (() => void) | null = null;
+
+  const handleResize = () => {
+    const isLarge = window.innerWidth >= 1024;
+
+    if (isLarge && !cleanup) {
+      cleanup = enableCustomCursor();
+    } else if (!isLarge && cleanup) {
+      cleanup();
+      cleanup = null;
+    }
+  };
+
+  handleResize();
+
+  window.addEventListener("resize", handleResize);
+
+  return () => {
+    window.removeEventListener("resize", handleResize);
+    if (cleanup) cleanup();
+  };
+}, []);
+
   //snow
   useEffect(() => {
     const canvas = document.getElementById("snowCanvas") as HTMLCanvasElement | null;
@@ -211,7 +249,7 @@ export default function Portfolio() {
       <AnimatePresence>
         {showIntro && (
           <motion.div
-            className="fixed inset-0 flex items-center justify-center bg-black z-50"
+            className="fixed inset-0 flex items-center justify-center bg-black z-50 select-none"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.5 } }}
           >
@@ -228,7 +266,7 @@ export default function Portfolio() {
       </AnimatePresence>
 
       <motion.section
-        className="h-screen flex flex-col items-center justify-center text-center"
+        className="h-screen flex flex-col items-center justify-center text-center select-none"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 2.5, duration: 1 }}
@@ -306,16 +344,7 @@ export default function Portfolio() {
       <section id="projects" className="py-24 px-6 max-w-4xl mx-auto">
         <h2 className="text-4xl font-bold mb-8">Projects</h2>
         <div className="grid md:grid-cols-2 gap-8">
-          <motion.div
-            key={1}
-            className="p-6 bg-black hover:bg-neutral-900 rounded-2xl shadow-lg hover:shadow-xl transition border"
-            whileHover={{ scale: 1.05 }}
-          >
-            <h3 className="text-2xl font-semibold mb-2">Žižkovska lajna</h3>
-            <p className="text-gray-400">
-              Top-down shooter game
-            </p>
-          </motion.div>
+          <Card title={"Žižkovská lajna"} description={"Top-down action shooter game."} img={"/zl-1.jpg"} />
 
         </div>
       </section>
@@ -325,16 +354,8 @@ export default function Portfolio() {
       <section id="tasks" className="py-24 px-6 max-w-4xl mx-auto">
         <h2 className="text-4xl font-bold mb-8">Tasks</h2>
         <div className="grid md:grid-cols-2 gap-8">
-          <motion.div
-            key={1}
-            className="p-6 bg-black hover:bg-neutral-900 rounded-2xl shadow-lg hover:shadow-xl transition border"
-            whileHover={{ scale: 1.05 }}
-          >
-            <h3 className="text-2xl font-semibold mb-2">Edu tech days</h3>
-            <p className="text-gray-400">
-              Edut tech days
-            </p>
-          </motion.div>
+          <Card title={"Edu tech days"} description={"HTML and CSS"} />
+
 
         </div>
       </section>

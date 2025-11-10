@@ -4,7 +4,13 @@
   --background: #ffffff;
   --foreground: #171717;
   scroll-behavior: smooth;
-  cursor: none;
+  cursor: auto;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    cursor: none;
+  }
 }
 
 @theme inline {
