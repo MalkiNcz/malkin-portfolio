@@ -6,7 +6,8 @@ import { SiTailwindcss, SiGodotengine } from "react-icons/si";
 import { TbBrandCSharp } from "react-icons/tb";
 import emailjs from "@emailjs/browser";
 import Modal from "@/components/modal";
-import Card from "@/components/card"
+import Card from "@/components/card";
+import Navbar from "@/components/navbar";
 
 
 const techIcons = {
@@ -32,35 +33,12 @@ const techColors = {
 };
 
 export default function Portfolio() {
-  const [showIntro, setShowIntro] = useState(true);
   const techs: (keyof typeof techIcons)[] = ["React", "TailwindCSS", "Node.js", "Godot", "C#", "Git", "PHP", "Laravel"];
   const form = useRef<HTMLFormElement>(null);
   const [modal, setModal] = useState<{ type: string; msg: string } | null>(null);
-  const fullText = "Starting...";
-  const [typedText, setTypedText] = useState("");
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setShowIntro(false), 4500);
-    return () => clearTimeout(timer);
-  }, []);
 
-  useEffect(() => {
-    let i = 0;
-    const typeWriter = () => {
-      if (i < fullText.length) {
-        setTypedText(fullText.slice(0, i + 1));
-        i++;
-        timeoutRef.current = setTimeout(typeWriter, 300);
-      }
-    };
 
-    timeoutRef.current = setTimeout(typeWriter, 300); 
-
-    return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
-  }, []);
 
   // cursor
   useEffect(() => {
@@ -182,7 +160,11 @@ export default function Portfolio() {
         }
 
         if (ctx) {
-          ctx.fillStyle = `rgba(255,255,255,${flake.opacity})`;
+          const fg = getComputedStyle(document.documentElement)
+  .getPropertyValue("--foreground")
+  .trim();
+
+ctx.fillStyle = fg.startsWith("#") ? fg : `rgb(${fg})`;
           ctx.beginPath();
           ctx.arc(flake.x, flake.y, flake.size, 0, Math.PI * 2);
           ctx.fill();
@@ -265,31 +247,14 @@ export default function Portfolio() {
 
 
   return (
-    <div className="min-h-screen bg-black text-white font-sans overflow-x-hidden">
-      <AnimatePresence>
-        {showIntro && (
-          <motion.div
-            className="fixed inset-0 flex items-center justify-center bg-black z-50 select-none"
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 0.4 } }}
-          >
-            <motion.h1
-              initial={{ scale: 1 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 1 }}
-              className="text-5xl font-bold"
-            >
-              {typedText}
-            </motion.h1>
-          </motion.div>
-        )}
-      </AnimatePresence>
+    <div className="min-h-screen  font-sans ">
+
 
       <motion.section
         className="h-screen flex flex-col items-center justify-center text-center select-none"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 2.5, duration: 1 }}
+        transition={{ delay: 1, duration: 1 }}
       >
 
         <canvas id="snowCanvas" className="absolute inset-0 w-full h-full z-0" />
@@ -302,7 +267,7 @@ export default function Portfolio() {
           Jakub Málek
         </motion.h1>
         <motion.p
-          className="text-xl text-gray-400 z-1"
+          className="text-xl text-[rgb(var(--foreother))] z-1"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 3.5, duration: 1 }}
@@ -312,7 +277,7 @@ export default function Portfolio() {
 
         <motion.a
           href="#about"
-          className="absolute bottom-10 flex flex-col items-center text-gray-400 hover:text-white transition-colors z-10 cursor-none"
+          className="absolute bottom-10 flex flex-col items-center text-[rgb(var(--foreother))] hover:text-cyan-500 transition-colors z-10 cursor-none"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 4, duration: 1 }}
@@ -327,12 +292,12 @@ export default function Portfolio() {
               ease: "easeInOut",
             }}
           >
-            <FaChevronDown size={96} className="text-white" />
+            <FaChevronDown size={96}  />
           </motion.div>
         </motion.a>
       </motion.section>
 
-
+      <Navbar  />
       <section id="about" className="py-24 px-6 max-w-4xl mx-auto">
         <h2 className="text-4xl font-bold mb-4">About Me</h2>
         <p className="text-gray-400 leading-relaxed">
@@ -340,7 +305,7 @@ export default function Portfolio() {
         </p>
       </section>
 
-      <section id="tech" className="py-24 px-6 max-w-4xl mx-auto">
+      <section id="tech" className="py-24 px-6 max-w-4xl mx-auto w-screen">
         <h2 className="text-4xl font-bold mb-4">Tech Stack</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 text-center">
           {techs.map((tech) => {
@@ -349,7 +314,8 @@ export default function Portfolio() {
             return (
               <motion.div
                 key={tech}
-                className="p-4 bg-black rounded-2xl hover:bg-neutral-900 transition flex flex-col items-center gap-2 border-3 border-white/20 hover:border-white/70"
+                className="p-4 bg-[rgb(var(--background))] rounded-2xl hover:bg-[var(--hoverTech)] transition flex flex-col items-center gap-2 border-3 border-[var(--border)] hover:border-[var(--borderHover)]
+"
                 whileHover={{ scale: 1.05 }}
               >
                 {Icon && <Icon size={40} color={color} />}
@@ -432,22 +398,22 @@ export default function Portfolio() {
         © {new Date().getFullYear()} Jakub Málek. All rights reserved.
         <div className="flex gap-5">
           <motion.a
-          href="https://www.instagram.com/malkinw_/"
-        >
-          <FaInstagram className="hover:text-white transition duration-300 cursor-none" size={34} />
-        </motion.a>
+            href="https://www.instagram.com/malkinw_/"
+          >
+            <FaInstagram className="hover:fill-[var(--foreground)] transition duration-300 cursor-none" size={34} />
+          </motion.a>
 
-        <motion.a
-          href="https://github.com/MalkiNcz/"
-        >
-          <FaGithub className="hover:text-white transition duration-300 cursor-none" size={32} />
-        </motion.a>
+          <motion.a
+            href="https://github.com/MalkiNcz/"
+          >
+            <FaGithub className="hover:fill-[var(--foreground)] transition duration-300 cursor-none" size={32} />
+          </motion.a>
 
-        <motion.a
-          href="https://steamcommunity.com/id/malkin_exe/"
-        >
-          <FaSteam className="hover:text-white transition duration-300 cursor-none" size={32} />
-        </motion.a>
+          <motion.a
+            href="https://steamcommunity.com/id/malkin_exe/"
+          >
+            <FaSteam className="hover:fill-[var(--foreground)] transition duration-300 cursor-none" size={32} />
+          </motion.a>
         </div>
 
       </footer>

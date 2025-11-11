@@ -1,11 +1,18 @@
 @import "tailwindcss";
 
 :root {
+  --color-white: #ffffff;
+  --color-black: #000000;
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #000000;
+  --foreother: #313131;
+  --border: color-mix(in oklab, var(--color-black) 20%, transparent);
+  --borderHover: color-mix(in oklab, var(--color-black) 70%, transparent);
+  --hoverTech: #e6e3e3;
   scroll-behavior: smooth;
   scrollbar-width: none;
   cursor: auto;
+  user-select: none;
 }
 
 @media (min-width: 1024px) {
@@ -17,14 +24,19 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-foreother: var(--foreother);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #000000;
+    --foreground: #ffffff;
+    --foreother: #99a1af;
+    --border: color-mix(in oklab, var(--color-white) 20%, transparent 80%);
+    --borderHover: color-mix(in oklab, var(--color-white) 20%, transparent 80%);
+    --hoverTech: #171717;
   }
 }
 
@@ -36,5 +48,5 @@ body {
 }
 
 #snowCanvas {
-  background: radial-gradient(circle at top, #111, #000);
+  background: var(--background);
 }
