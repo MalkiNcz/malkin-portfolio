@@ -5,3 +5,4 @@
  - fix navbar bg
  - contact form fix colors
  - add about me text
+ - auto selecting a's in navbar
