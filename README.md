@@ -6,3 +6,6 @@
  - add about me text
  - add more tech's frontend, backend etc...
  - add github pictures to projects/tasks
+ - breakpoints: navbar, title
+ - fix cards on mobile - cant hover
+ - disable title animation when on small screen od button for it
