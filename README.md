@@ -2,7 +2,7 @@
 
 # Portfolio website
  - todo: 
- - fix navbar bg
  - contact form fix colors
  - add about me text
- - auto selecting a's in navbar
+ - add more tech's frontend, backend etc...
+ - add github pictures to projects/tasks

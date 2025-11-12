@@ -8,6 +8,7 @@ import emailjs from "@emailjs/browser";
 import Modal from "@/components/modal";
 import Card from "@/components/card";
 import Navbar from "@/components/navbar";
+import Title from "@/components/title";
 
 
 const techIcons = {
@@ -36,8 +37,16 @@ export default function Portfolio() {
   const techs: (keyof typeof techIcons)[] = ["React", "TailwindCSS", "Node.js", "Godot", "C#", "Git", "PHP", "Laravel"];
   const form = useRef<HTMLFormElement>(null);
   const [modal, setModal] = useState<{ type: string; msg: string } | null>(null);
+  const [active, setActive] = useState<string>("");
 
-
+/*<motion.h1
+          className="text-6xl font-extrabold mb-4 z-1"
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 3, duration: 1 }}
+        >
+          Jakub Málek
+        </motion.h1> */
 
 
   // cursor
@@ -161,10 +170,10 @@ export default function Portfolio() {
 
         if (ctx) {
           const fg = getComputedStyle(document.documentElement)
-  .getPropertyValue("--foreground")
-  .trim();
+            .getPropertyValue("--foreground")
+            .trim();
 
-ctx.fillStyle = fg.startsWith("#") ? fg : `rgb(${fg})`;
+          ctx.fillStyle = fg.startsWith("#") ? fg : `rgb(${fg})`;
           ctx.beginPath();
           ctx.arc(flake.x, flake.y, flake.size, 0, Math.PI * 2);
           ctx.fill();
@@ -258,22 +267,10 @@ ctx.fillStyle = fg.startsWith("#") ? fg : `rgb(${fg})`;
       >
 
         <canvas id="snowCanvas" className="absolute inset-0 w-full h-full z-0" />
-        <motion.h1
-          className="text-6xl font-extrabold mb-4 z-1"
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 3, duration: 1 }}
-        >
-          Jakub Málek
-        </motion.h1>
-        <motion.p
-          className="text-xl text-[rgb(var(--foreother))] z-1"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 3.5, duration: 1 }}
-        >
-          Student / Developer
-        </motion.p>
+
+        
+        <Title />
+        
 
         <motion.a
           href="#about"
@@ -292,20 +289,20 @@ ctx.fillStyle = fg.startsWith("#") ? fg : `rgb(${fg})`;
               ease: "easeInOut",
             }}
           >
-            <FaChevronDown size={96}  />
+            <FaChevronDown size={96} />
           </motion.div>
         </motion.a>
       </motion.section>
 
-      <Navbar  />
-      <section id="about" className="py-24 px-6 max-w-4xl mx-auto">
+      <Navbar />
+      <section id="about" className="py-24 px-6 max-w-4xl mx-auto h-screen">
         <h2 className="text-4xl font-bold mb-4">About Me</h2>
         <p className="text-gray-400 leading-relaxed">
           Fuck frontend
         </p>
       </section>
 
-      <section id="tech" className="py-24 px-6 max-w-4xl mx-auto w-screen">
+      <section id="tech" className="py-24 px-6 max-w-4xl mx-auto w-screen h-screen">
         <h2 className="text-4xl font-bold mb-4">Tech Stack</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 text-center">
           {techs.map((tech) => {
@@ -327,7 +324,7 @@ ctx.fillStyle = fg.startsWith("#") ? fg : `rgb(${fg})`;
       </section>
 
 
-      <section id="projects" className="py-24 px-6 max-w-4xl mx-auto">
+      <section id="projects" className="py-24 px-6 max-w-4xl mx-auto h-screen">
         <h2 className="text-4xl font-bold mb-8">Projects</h2>
         <div className="grid md:grid-cols-2 gap-8">
           <Card title="Žižkovská lajna" description="Top-down action shooter game." img="/zl-1.jpg" rdr="https://malkincz.github.io/zizLajna/" />
@@ -340,7 +337,7 @@ ctx.fillStyle = fg.startsWith("#") ? fg : `rgb(${fg})`;
 
 
 
-      <section id="tasks" className="py-24 px-6 max-w-4xl mx-auto">
+      <section id="tasks" className="py-24 px-6 max-w-4xl mx-auto h-screen">
         <h2 className="text-4xl font-bold mb-8">Tasks</h2>
         <div className="grid md:grid-cols-2 gap-8">
           <Card title={"Edu tech days"} description={"HTML and CSS"} rdr="https://malkincz.github.io/edutechdays/" />
@@ -349,7 +346,7 @@ ctx.fillStyle = fg.startsWith("#") ? fg : `rgb(${fg})`;
         </div>
       </section>
 
-      <section id="contact" className="py-24 px-6 max-w-4xl mx-auto">
+      <section id="contact" className="py-24 px-6 max-w-4xl mx-auto h-screen">
         <h2 className="text-4xl font-bold mb-8">Contact me</h2>
 
         <form
