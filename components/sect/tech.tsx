@@ -50,7 +50,7 @@ export default function Tech() {
           const color = techColors[tech];
           const name = tech;
           return (
-            <Card index={techs.indexOf(tech)} color={color} Icon={Icon} name={name} />
+            <Card index={techs.indexOf(tech)} color={color} Icon={Icon} name={name} key={techs.indexOf(tech)} />
           );
         })}
       </div>

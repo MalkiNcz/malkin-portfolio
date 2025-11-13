@@ -55,24 +55,19 @@ body {
   background: var(--background);
 }
 
-.logo {
-  text-align: center;
-  width: 65%;
-  height: 250px;
-  margin: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-   user-select: none;
-}
+
 
 
 .logo b {
   font: 400 19vh "Vibur";
   color: #fee;
   text-shadow: 0 0 0.5em #ff4444, 0 0 0.2em #ff4444;
+}
+
+@media only screen and (max-width: 480px) {
+  .logo b {
+    font: 400 14vh "Vibur";
+  }
 }
 
 .logo b span {

@@ -21,15 +21,6 @@ export default function Portfolio() {
   const [modal, setModal] = useState<{ type: string; msg: string } | null>(null);
   const [active, setActive] = useState<string>("");
 
-/*<motion.h1
-          className="text-6xl font-extrabold mb-4 z-1"
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 3, duration: 1 }}
-        >
-          Jakub Málek
-        </motion.h1> */
-
 
   // cursor
   useEffect(() => {
@@ -99,7 +90,7 @@ export default function Portfolio() {
       step: number;
       opacity: number;
     }[] = [];
-    const flakeCount = 400;
+    const flakeCount = window.innerWidth < 768 ? 100 : 200;
     let mX = -100, mY = -100;
 
     canvas.width = window.innerWidth;
