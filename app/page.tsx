@@ -1,16 +1,17 @@
 'use client';
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaChevronDown, FaInstagram, FaGithub, FaSteam, FaReact, FaNodeJs, FaGitAlt, FaPhp, FaLaravel } from "react-icons/fa";
+import { FaChevronDown, FaInstagram, FaGithub, FaSteam, FaReact, FaNodeJs, FaGitAlt, FaPhp, FaLaravel, FaSnowflake, FaBan } from "react-icons/fa";
 import { SiTailwindcss, SiGodotengine } from "react-icons/si";
 import { TbBrandCSharp } from "react-icons/tb";
 import emailjs from "@emailjs/browser";
 import Modal from "@/components/modal";
 import Card from "@/components/card";
 import Navbar from "@/components/navbar";
-import Title from "@/components/title";
+
 import Tech from "@/components/sect/tech";
 import Projects from "@/components/sect/projects";
+import Snow from "@/components/snow";
 
 
 
@@ -20,7 +21,7 @@ export default function Portfolio() {
   const form = useRef<HTMLFormElement>(null);
   const [modal, setModal] = useState<{ type: string; msg: string } | null>(null);
   const [active, setActive] = useState<string>("");
-
+  
 
   // cursor
   useEffect(() => {
@@ -74,130 +75,7 @@ export default function Portfolio() {
   }, []);
 
   //snow
-  useEffect(() => {
-    const canvas = document.getElementById("snowCanvas") as HTMLCanvasElement | null;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    let flakes: {
-      speed: number;
-      velY: number;
-      velX: number;
-      x: number;
-      y: number;
-      size: number;
-      stepSize: number;
-      step: number;
-      opacity: number;
-    }[] = [];
-    const flakeCount = window.innerWidth < 768 ? 100 : 200;
-    let mX = -100, mY = -100;
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    function reset(flake: any) {
-      if (canvas) flake.x = Math.floor(Math.random() * canvas.width);
-      flake.y = 0;
-      flake.size = Math.random() * 3 + 2;
-      flake.speed = Math.random() * 1 + 0.5;
-      flake.velY = flake.speed;
-      flake.velX = 0;
-      flake.opacity = Math.random() * 0.5 + 0.3;
-    }
-
-    function snow() {
-      if (canvas && ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      for (let i = 0; i < flakeCount; i++) {
-        const flake = flakes[i];
-        const dist = Math.sqrt((flake.x - mX) ** 2 + (flake.y - mY) ** 2);
-        const minDist = 50;
-
-        if (dist < minDist) {
-          const force = minDist / (dist * dist);
-          const xcomp = (mX - flake.x) / dist;
-          const ycomp = (mY - flake.y) / dist;
-          const deltaV = force / 2;
-          flake.velX -= deltaV * xcomp;
-          flake.velY -= deltaV * ycomp;
-        } else {
-          flake.velX *= 0.98;
-          if (flake.velY <= flake.speed) flake.velY = flake.speed;
-          flake.velX += Math.cos((flake.step += 0.05)) * flake.stepSize;
-        }
-
-        flake.y += flake.velY;
-        flake.x += flake.velX;
-
-        if (canvas) {
-          if (
-            flake.y >= canvas.height ||
-            flake.y <= 0 ||
-            flake.x >= canvas.width ||
-            flake.x <= 0
-          ) {
-            reset(flake);
-          }
-        }
-
-        if (ctx) {
-          const fg = getComputedStyle(document.documentElement)
-            .getPropertyValue("--foreground")
-            .trim();
-
-          ctx.fillStyle = fg.startsWith("#") ? fg : `rgb(${fg})`;
-          ctx.beginPath();
-          ctx.arc(flake.x, flake.y, flake.size, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
-      requestAnimationFrame(snow);
-    }
-
-    function init() {
-      flakes = [];
-      if (canvas) {
-        for (let i = 0; i < flakeCount; i++) {
-          const x = Math.floor(Math.random() * canvas.width);
-          const y = Math.floor(Math.random() * canvas.height);
-          const size = Math.random() * 3 + 2;
-          const speed = Math.random() * 1 + 0.5;
-          const opacity = Math.random() * 0.5 + 0.3;
-
-          flakes.push({
-            speed,
-            velY: speed,
-            velX: 0,
-            x,
-            y,
-            size,
-            stepSize: Math.random() / 30,
-            step: 0,
-            opacity,
-          });
-        }
-        snow();
-      }
-    }
-
-    canvas.addEventListener("mousemove", (e) => {
-      mX = e.clientX;
-      mY = e.clientY;
-    });
-
-    window.addEventListener("resize", () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
-
-    init();
-
-    return () => {
-      window.removeEventListener("resize", () => { });
-    };
-  }, []);
-  //<canvas id="snowCanvas" className="absolute inset-0 w-full h-full z-0" />
 
   const sendEmail = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -231,42 +109,9 @@ export default function Portfolio() {
 
   return (
     <div className="min-h-screen  font-sans ">
+      <Snow />
 
-
-      <motion.section
-        className="h-screen flex flex-col items-center justify-center text-center select-none"
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1, duration: 1 }}
-      >
-
-        
-
-        
-        <Title />
-        
-
-        <motion.a
-          href="#about"
-          className="absolute bottom-10 flex flex-col items-center text-[rgb(var(--foreother))] hover:text-cyan-500 transition-colors z-10 cursor-none"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 4, duration: 1 }}
-        >
-
-
-          <motion.div
-            animate={{ y: [0, 15, 0] }}
-            transition={{
-              duration: 1.5,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          >
-            <FaChevronDown size={96} />
-          </motion.div>
-        </motion.a>
-      </motion.section>
+      
 
       <Navbar />
       <section id="about" className="py-24 px-6 max-w-4xl mx-auto min-h-screen">
