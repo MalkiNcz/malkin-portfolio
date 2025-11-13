@@ -1,9 +1,10 @@
 
 import { motion } from "framer-motion";
 import { IconType } from "react-icons";
-import { FaReact, FaNodeJs, FaGitAlt, FaPhp, FaLaravel } from "react-icons/fa";
+import { FaReact, FaNodeJs, FaGitAlt, FaPhp, FaLaravel, FaHtml5, FaCss3, FaGithub } from "react-icons/fa";
 import { SiTailwindcss, SiGodotengine } from "react-icons/si";
 import { TbBrandCSharp } from "react-icons/tb";
+import { IoLogoJavascript } from "react-icons/io";
 
 export default function Tech() {
   const techs: (keyof typeof techIcons)[] = ["React", "TailwindCSS", "Node.js", "Godot", "C#", "Git", "PHP", "Laravel", "HTML", "CSS", "JavaScript", "Github"];
@@ -18,17 +19,26 @@ export default function Tech() {
     "Git": FaGitAlt,
     "PHP": FaPhp,
     "Laravel": FaLaravel,
+    "HTML": FaHtml5,
+    "CSS": FaCss3,
+    "JavaScript": IoLogoJavascript,
+    "Github": FaGithub
   };
 
+  
   const techColors = {
     React: "#61DBFB",
-    "TailwindCSS": "#38B2AC",
+    TailwindCSS: "#38B2AC",
     "Node.js": "#68A063",
     Godot: "#478CBF",
     "C#": "#9B4F96",
     Git: "#F1502F",
     PHP: "#787CB5",
     Laravel: "#FF2D20",
+    HTML: "#E34C26",
+    CSS: "#264DE4",
+    JavaScript: "#F7DF1E",
+    Github: "#ffffff",
   };
 
   return (
@@ -40,7 +50,7 @@ export default function Tech() {
           const color = techColors[tech];
           const name = tech;
           return (
-            <Card index={techs.indexOf(tech)} color={color} Icon={Icon} />
+            <Card index={techs.indexOf(tech)} color={color} Icon={Icon} name={name} />
           );
         })}
       </div>
@@ -48,7 +58,7 @@ export default function Tech() {
   )
 }
 
-function Card( { index, color, Icon  } : {index: number, color: string, Icon: IconType}) {
+function Card( { index, color, Icon, name  } : {index: number, color: string, Icon: IconType, name: string}) {
 const techs = ["React", "TailwindCSS", "Node.js", "Godot", "C#", "Git", "PHP", "Laravel"];
   return (
     <motion.div
@@ -58,7 +68,7 @@ const techs = ["React", "TailwindCSS", "Node.js", "Godot", "C#", "Git", "PHP", "
       whileHover={{ scale: 1.05 }}
     >
       {Icon && <Icon size={40} color={color} />}
-      <span>{techs[index]}</span>
+      <span>{name}</span>
     </motion.div>
   )
 }
