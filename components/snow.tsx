@@ -214,7 +214,7 @@ export default function Snow() {
                 absolute bottom-6 right-6 z-50 p-3 rounded-full border-2
                 transition-all duration-300 shadow-lg backdrop-blur-md
                 ${enabled
-                        ? "bg-white/10 border-white/50 hover:bg-white/20"
+                        ? "bg-white/10 border-[var(--foreground)] hover:bg-white/20"
                         : "bg-red-500/20 border-red-500/50 hover:bg-red-500/30"
                     }
               `}
@@ -222,7 +222,7 @@ export default function Snow() {
             >
                 <div className="relative flex items-center justify-center">
                     <FaSnowflake
-                        className={`text-2xl transition-all duration-300 ${enabled ? "text-white" : "text-gray-400"
+                        className={`text-2xl transition-all duration-300 ${enabled ? "text-[var(--foreground)]" : "text-gray-400"
                             }`}
                     />
                     {!enabled && (

@@ -6,3 +6,4 @@
  - add about me text
  - add github pictures to projects/tasks
  - fix cards on mobile - cant hover
+ - fix light mode title color
