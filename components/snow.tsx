@@ -181,6 +181,7 @@ export default function Snow() {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 1 }}
+            id="snow"
         >
             <canvas id="snowCanvas" className="absolute inset-0 w-full h-full z-0" />
             <Title />

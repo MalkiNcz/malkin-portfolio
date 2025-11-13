@@ -13,15 +13,92 @@ import Tech from "@/components/sect/tech";
 import Projects from "@/components/sect/projects";
 import Snow from "@/components/snow";
 
+export function useFullpageScroll(sectionIds: string[]) {
+  const [currentSection, setCurrentSection] = useState(0);
+  const currentSectionRef = useRef(0);
+  const isScrolling = useRef(false);
+  const touchStartY = useRef<number | null>(null);
 
+  const scrollToSection = (index: number) => {
+    index = Math.max(0, Math.min(index, sectionIds.length - 1));
+    if (isScrolling.current || index === currentSectionRef.current) return;
 
+    const section = document.getElementById(sectionIds[index]);
+    if (!section) return;
+
+    isScrolling.current = true;
+    const start = window.scrollY;
+    const target = section.offsetTop;
+    const duration = 700;
+    const startTime = performance.now();
+
+    const animate = (time: number) => {
+      const elapsed = time - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const ease = 0.5 - Math.cos(progress * Math.PI) / 2; // easeInOut
+
+      window.scrollTo(0, start + (target - start) * ease);
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        currentSectionRef.current = index;
+        setCurrentSection(index);
+        isScrolling.current = false;
+      }
+    };
+
+    requestAnimationFrame(animate);
+  };
+
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      if (isScrolling.current) return;
+      e.preventDefault();
+
+      if (e.deltaY > 0) scrollToSection(currentSectionRef.current + 1);
+      else if (e.deltaY < 0) scrollToSection(currentSectionRef.current - 1);
+    };
+
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY.current = e.touches[0].clientY;
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (isScrolling.current || touchStartY.current === null) return;
+
+      const touchEndY = e.changedTouches[0].clientY;
+      const diff = touchStartY.current - touchEndY;
+
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) scrollToSection(currentSectionRef.current + 1);
+        else scrollToSection(currentSectionRef.current - 1);
+      }
+
+      touchStartY.current = null;
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: false });
+    window.addEventListener("touchstart", handleTouchStart);
+    window.addEventListener("touchend", handleTouchEnd);
+
+    return () => {
+      window.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [sectionIds]);
+
+  return { currentSection, scrollToSection };
+}
 
 export default function Portfolio() {
   
   const form = useRef<HTMLFormElement>(null);
   const [modal, setModal] = useState<{ type: string; msg: string } | null>(null);
   const [active, setActive] = useState<string>("");
-  
+  const sectionIds = ["snow", "about", "tech", "projects", "tasks", "contact", "feet"];
+  const { currentSection, scrollToSection } = useFullpageScroll(sectionIds);
 
   // cursor
   useEffect(() => {
@@ -184,7 +261,7 @@ export default function Portfolio() {
         </form>
       </section>
 
-      <footer className="text-center py-12 text-gray-600 border-t border-gray-800 flex flex-col md:flex-row justify-center items-center gap-5 ">
+      <footer className="text-center py-12 text-gray-600 border-t border-gray-800 flex flex-col md:flex-row justify-center items-center gap-5 " id="feet">
         © {new Date().getFullYear()} Jakub Málek. All rights reserved.
         <div className="flex gap-5">
           <motion.a

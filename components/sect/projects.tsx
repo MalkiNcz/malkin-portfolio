@@ -9,7 +9,6 @@ export default function Projects() {
                   <Card title="Žižkovská lajna" description="Top-down action shooter game." img="/zl-1.jpg" rdr="https://malkincz.github.io/zizLajna/" />
                   <Card title="Risk realm" description="Online casino simulator" rdr="https://github.com/KoblizekXD/riskrealm" />
                   <Card title="Cock down shooter" description="Relaxing game where you shoot chickens down." rdr="https://github.com/Chigga-Solutions/Cock-Down-Shooter" />
-                  <Card title="Kontrola výkazů + Kontrola dohledu" description="Apps for more efficient data control in windows forms" />
                   <Card title="Termio - quizzes" description="Quizzes implemented in Termio.cz - working on" rdr="https://termio.cz" />
                 </div>
               </section>

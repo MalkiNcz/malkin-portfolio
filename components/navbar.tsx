@@ -16,35 +16,43 @@ export default function Navbar() {
   ];
 
     const handleClick = (index: number, id: string) => {
-    const section = document.getElementById(id);
-    if (!section) return;
-    setActiveIndex(index);
-    setIgnoreScroll(true);
-    section.scrollIntoView({ behavior: "smooth" });
-  };
+  const section = document.getElementById(id);
+  if (!section) return;
+
+  setActiveIndex(index);
+  setIgnoreScroll(true); // ignoruj scroll spy
+
+  section.scrollIntoView({ behavior: "smooth" });
+
+  // Po dokončení animace povol scroll spy
+  setTimeout(() => setIgnoreScroll(false), 700); // délka animace scroll
+  setMenuOpen(false); // zavři mobilní menu
+};
+
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (ignoreScroll) return;
+  const handleScroll = () => {
+    if (ignoreScroll) return;
 
-      let currentIndex: number | null = null;
-      items.forEach((item) => {
-        const section = document.getElementById(item.id);
-        if (section) {
-          const top = section.offsetTop;
-          const height = section.clientHeight;
-          if (window.scrollY >= top - height / 2) {
-            currentIndex = item.index;
-          }
+    let currentIndex: number | null = null;
+    items.forEach((item) => {
+      const section = document.getElementById(item.id);
+      if (section) {
+        const top = section.offsetTop;
+        const height = section.clientHeight;
+        if (window.scrollY >= top - height / 2) {
+          currentIndex = item.index;
         }
-      });
-      setActiveIndex(currentIndex);
-    };
+      }
+    });
+    if (currentIndex !== activeIndex) setActiveIndex(currentIndex);
+  };
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [ignoreScroll]);
+  window.addEventListener("scroll", handleScroll, { passive: true });
+  handleScroll();
+  return () => window.removeEventListener("scroll", handleScroll);
+}, [ignoreScroll, activeIndex]);
+
 
   return (
     <header className="sticky top-0 z-50 bg-[var(--navbarbg)] backdrop-blur-lg shadow-lg border-b border-[var(--border)]">
@@ -85,20 +93,20 @@ export default function Navbar() {
         className="md:hidden overflow-hidden bg-[var(--navbarbg)] border-t border-[var(--border)] absolute w-full"
       >
         <div className="flex flex-col items-center py-4 gap-4">
-          {items.map(({ index, id }) => (
-            <button
-              key={index}
-              onClick={() => handleClick(index, id)}
-              className={`text-lg ${
-                index === activeIndex
-                  ? "text-[var(--accent)] font-semibold"
-                  : "text-white"
-              }`}
-            >
-              {id.charAt(0).toUpperCase() + id.slice(1)}
-            </button>
-          ))}
-        </div>
+  {items.map(({ index, id }) => (
+    <button
+      key={index}
+      onClick={() => handleClick(index, id)}
+      className={`text-lg ${
+        index === activeIndex
+          ? "text-[var(--accent)] font-semibold"
+          : "text-white"
+      }`}
+    >
+      {id.charAt(0).toUpperCase() + id.slice(1)}
+    </button>
+  ))}
+</div>
       </motion.nav>
     </header>
   );
