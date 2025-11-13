@@ -9,32 +9,13 @@ import Modal from "@/components/modal";
 import Card from "@/components/card";
 import Navbar from "@/components/navbar";
 import Title from "@/components/title";
+import Tech from "@/components/sect/tech";
 
 
-const techIcons = {
-  "React": FaReact,
-  "TailwindCSS": SiTailwindcss,
-  "Node.js": FaNodeJs,
-  "Godot": SiGodotengine,
-  "C#": TbBrandCSharp,
-  "Git": FaGitAlt,
-  "PHP": FaPhp,
-  "Laravel": FaLaravel,
-};
 
-const techColors = {
-  React: "#61DBFB",
-  "TailwindCSS": "#38B2AC",
-  "Node.js": "#68A063",
-  Godot: "#478CBF",
-  "C#": "#9B4F96",
-  Git: "#F1502F",
-  PHP: "#787CB5",
-  Laravel: "#FF2D20",
-};
 
 export default function Portfolio() {
-  const techs: (keyof typeof techIcons)[] = ["React", "TailwindCSS", "Node.js", "Godot", "C#", "Git", "PHP", "Laravel"];
+  
   const form = useRef<HTMLFormElement>(null);
   const [modal, setModal] = useState<{ type: string; msg: string } | null>(null);
   const [active, setActive] = useState<string>("");
@@ -295,36 +276,19 @@ export default function Portfolio() {
       </motion.section>
 
       <Navbar />
-      <section id="about" className="py-24 px-6 max-w-4xl mx-auto h-screen">
+      <section id="about" className="py-24 px-6 max-w-4xl mx-auto min-h-screen">
         <h2 className="text-4xl font-bold mb-4">About Me</h2>
         <p className="text-gray-400 leading-relaxed">
           Fuck frontend
         </p>
       </section>
 
-      <section id="tech" className="py-24 px-6 max-w-4xl mx-auto w-screen h-screen">
-        <h2 className="text-4xl font-bold mb-4">Tech Stack</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 text-center">
-          {techs.map((tech) => {
-            const Icon = techIcons[tech];
-            const color = techColors[tech];
-            return (
-              <motion.div
-                key={tech}
-                className="p-4 bg-[rgb(var(--background))] rounded-2xl hover:bg-[var(--hoverTech)] transition flex flex-col items-center gap-2 border-3 border-[var(--border)] hover:border-[var(--borderHover)]
-"
-                whileHover={{ scale: 1.05 }}
-              >
-                {Icon && <Icon size={40} color={color} />}
-                <span>{tech}</span>
-              </motion.div>
-            );
-          })}
-        </div>
-      </section>
+      <Tech />
+
+      
 
 
-      <section id="projects" className="py-24 px-6 max-w-4xl mx-auto h-screen">
+      <section id="projects" className="py-24 px-6 max-w-4xl mx-auto min-h-screen">
         <h2 className="text-4xl font-bold mb-8">Projects</h2>
         <div className="grid md:grid-cols-2 gap-8">
           <Card title="Žižkovská lajna" description="Top-down action shooter game." img="/zl-1.jpg" rdr="https://malkincz.github.io/zizLajna/" />
@@ -337,7 +301,7 @@ export default function Portfolio() {
 
 
 
-      <section id="tasks" className="py-24 px-6 max-w-4xl mx-auto h-screen">
+      <section id="tasks" className="py-24 px-6 max-w-4xl mx-auto min-h-screen">
         <h2 className="text-4xl font-bold mb-8">Tasks</h2>
         <div className="grid md:grid-cols-2 gap-8">
           <Card title={"Edu tech days"} description={"HTML and CSS"} rdr="https://malkincz.github.io/edutechdays/" />
