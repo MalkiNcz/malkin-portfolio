@@ -197,6 +197,7 @@ export default function Portfolio() {
       window.removeEventListener("resize", () => { });
     };
   }, []);
+  //<canvas id="snowCanvas" className="absolute inset-0 w-full h-full z-0" />
 
   const sendEmail = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -239,7 +240,7 @@ export default function Portfolio() {
         transition={{ delay: 1, duration: 1 }}
       >
 
-        <canvas id="snowCanvas" className="absolute inset-0 w-full h-full z-0" />
+        
 
         
         <Title />

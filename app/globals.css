@@ -70,15 +70,19 @@ body {
   }
 }
 
-.logo b span {
+
+
+@media only screen and (min-width: 768px) {
+  .logo b span {
   display: inline-block;
   animation: blinkOpacity linear infinite 3s;
   will-change: opacity, transform;
 }
 
-.logo b span:nth-of-type(2) { animation-delay: 0.5s; }
-.logo b span:nth-of-type(3) { animation-delay: 1s; }
-.logo b span:nth-of-type(4) { animation-delay: 1.5s; }
+  .logo b span:nth-of-type(2) { animation-delay: 0.5s; }
+  .logo b span:nth-of-type(3) { animation-delay: 1s; }
+  .logo b span:nth-of-type(4) { animation-delay: 1.5s; }
+}
 
 @keyframes blinkOpacity {
   0%, 70%, 100% { opacity: 1; transform: scale(1); }
