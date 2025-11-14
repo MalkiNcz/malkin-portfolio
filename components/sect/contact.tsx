@@ -34,7 +34,7 @@ export default function Contact() {
       };
 
     return (
-        <section id="contact" className="py-24 px-6 max-w-4xl mx-auto max-h-screen">
+        <section id="contact" className="py-24 px-6 max-w-4xl mx-auto min-h-screen md:max-h-screen">
         <h2 className="text-4xl font-bold mb-8">Contact me</h2>
 
         <form

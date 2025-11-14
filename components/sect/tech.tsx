@@ -42,7 +42,7 @@ export default function Tech() {
   };
 
   return (
-    <section id="tech" className="py-24 px-6 max-w-4xl mx-auto w-screen max-h-screen">
+    <section id="tech" className="py-24 px-6 max-w-4xl mx-auto w-screen min-h-screen md:max-h-screen">
       <h2 className="text-4xl font-bold mb-4">Tech Stack</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 text-center">
         {techs.map((tech) => {

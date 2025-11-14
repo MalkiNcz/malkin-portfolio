@@ -2,7 +2,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="py-32 px-6 max-w-4xl mx-auto min-h-screen flex flex-col justify-center"
+      className="py-32 px-6 max-w-4xl mx-auto min-h-screen md:max-h-screen flex flex-col justify-center"
     >
       <div className="space-y-6">
         <h2 className="text-5xl font-extrabold tracking-tight mb-2 color-[var(--foreground)]">
