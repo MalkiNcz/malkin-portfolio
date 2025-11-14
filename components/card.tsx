@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
-import { useState } from "react";
+import { motion, Variants } from "framer-motion";
+import { useState, useEffect } from "react";
 
 
 type CardProps = {
@@ -10,8 +10,49 @@ type CardProps = {
 }
 
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  return isMobile;
+}
+
 
 export default function Card({ title, description, img, rdr }: CardProps) {
+    const isMobile = useIsMobile();
+
+    const infoVariants : Variants = isMobile
+        ? {
+            rest: { y: 0 },
+        }
+        : {
+            rest: { y: "100%" },
+            hover: { y: 0 },
+        };
+
+    const titleVariants : Variants = isMobile
+        ? {
+            rest: { y: "-300%" },
+        }
+        : {
+            rest: { y: "-100%" },
+            hover: { y: "-300%" }
+        };
+
+    const buttonVariants : Variants = isMobile
+        ? {
+            rest: { opacity: 1, y: 0 },
+        }
+        : {
+            rest: { opacity: 0, y: 10 },
+            hover: { opacity: 1, y: 0 }
+        };
 
 
     const handleClick = () => {
@@ -33,11 +74,8 @@ export default function Card({ title, description, img, rdr }: CardProps) {
             transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
         >
             <motion.h3
-                className="text-xl font-bold text-white z-30"
-                variants={{
-                    rest: { y: "-100%" },
-                    hover: { y: "-300%" }
-                }}
+                className="text-xl font-bold text-white z-30 text-shadow-lg/30"
+                variants={titleVariants}
                 transition={{ duration: 0.35 }}
             >
                 {title}
@@ -45,10 +83,7 @@ export default function Card({ title, description, img, rdr }: CardProps) {
 
             <motion.div
                 className="absolute z-10 flex flex-col items-center justify-end text-center p-4 w-full bg-black/50 h-full"
-                variants={{
-                    rest: { y: "100%" },
-                    hover: { y: 0 },
-                }}
+                variants={infoVariants}
                 transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
             >
 
@@ -59,10 +94,7 @@ export default function Card({ title, description, img, rdr }: CardProps) {
 
                 <motion.button
                     className="mt-4 bg-black text-white text-xs uppercase tracking-wider font-bold px-4 py-2 rounded-md hover:bg-neutral-800 border cursor-pointer lg:cursor-none"
-                    variants={{
-                        rest: { opacity: 0, y: 10 },
-                        hover: { opacity: 1, y: 0 },
-                    }}
+                    variants={buttonVariants}
                     transition={{ duration: 0.3, delay: 0.3 }}
                     onClick={handleClick}
                 >
